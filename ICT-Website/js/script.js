@@ -490,20 +490,27 @@ if(!ld)return;
 window.__introHold=true;
 var url='assets/intro.mp4';
 var st=D.createElement('div');st.className='iv-stage';
-st.innerHTML='<div class="iv-card" id="ivCard"><video id="ivVid" playsinline webkit-playsinline preload="auto" aria-label="Welcome video from Infiniti Code Technologies"></video><div class="iv-pr" id="ivPr"></div><button class="iv-play" id="ivPlay" type="button" aria-label="Play welcome video with sound"><span>&#9654;</span>Tap to play with sound</button></div>';
+st.innerHTML='<div class="iv-card" id="ivCard"><video id="ivVid" playsinline webkit-playsinline preload="auto" aria-label="Welcome video from Infiniti Code Technologies"></video><div class="iv-pr" id="ivPr"></div><button class="iv-play" id="ivPlay" type="button" aria-label="Play welcome video with sound"><span><svg class="iv-ic" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ivg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9d5ff"/></linearGradient></defs><path d="M8.2 5.6c0-1 1.1-1.6 1.9-1.1l9 5.9c.7.5.7 1.6 0 2.1l-9 5.9c-.8.5-1.9-.1-1.9-1.1z" fill="url(#ivg)"/></svg></span>Tap to play with sound</button></div>';
 ld.appendChild(st);
 var sk=D.createElement('button');sk.className='iv-skip';sk.type='button';sk.textContent='Skip \u2192';ld.appendChild(sk);
 var edge=D.createElement('div');edge.className='rise-edge';D.body.appendChild(edge);
 var card=D.getElementById('ivCard'),v=D.getElementById('ivVid'),pr=D.getElementById('ivPr'),pl=D.getElementById('ivPlay');
 v.src=url;v.volume=1;v.muted=false;try{v.load()}catch(e){}
 var released=false,started=false;
-var muted=false,chip=D.createElement('button');chip.className='iv-snd';chip.type='button';chip.innerHTML='&#128263; Tap for sound';card.appendChild(chip);
-function unmute(){if(!muted)return;v.muted=false;v.volume=1;muted=false;chip.style.display='none'}
+var muted=false,userMuted=false,chip=D.createElement('button');chip.className='iv-skip iv-tog';chip.type='button';chip.style.display='none';
+var lgEl=D.getElementById('ldl'),lgSrc=lgEl&&lgEl.src;
+chip.innerHTML='<span class="tg-ic">'+(lgSrc?'<img class="iv-lg" alt="" aria-hidden="true" src="'+lgSrc+'">':'')+'<svg class="iv-ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path class="sp" d="M4.5 9.6h3.1L12.4 5.8v12.4l-4.8-3.8H4.5z" fill="currentColor" fill-opacity=".9"/><path class="w" d="M15.6 9.3a4 4 0 0 1 0 5.4"/><path class="w" d="M18.1 6.9a7.4 7.4 0 0 1 0 10.2"/><path class="x" d="M15.8 9.6l4.6 4.8M20.4 9.6l-4.6 4.8"/></svg></span><span class="tg-tx">Sound on</span><span class="tg-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+var tx=chip.querySelector('.tg-tx');
+ld.appendChild(chip);
+function paint(){var off=v.muted||v.volume===0;chip.classList.toggle('off',off);tx.textContent=off?'Tap for sound':'Sound on';chip.title=off?'Turn sound on':'Turn sound off';chip.setAttribute('aria-pressed',off?'false':'true');chip.setAttribute('aria-label',off?'Turn sound on':'Turn sound off')}
+function setMuted(m){v.muted=m;muted=m;if(!m)v.volume=1;paint()}
+function unmute(){if(!muted||userMuted)return;setMuted(false)}
+chip.addEventListener('click',function(e){e.stopPropagation();var m=!v.muted;userMuted=m;setMuted(m)});
 var beginning=false,wd=0;
-v.addEventListener('playing',function(){started=true;beginning=false;clearTimeout(wd);card.classList.remove('need');if(muted)chip.style.display='block'});
+v.addEventListener('playing',function(){started=true;beginning=false;clearTimeout(wd);card.classList.remove('need');chip.style.display='inline-flex';paint()});
 function muteAndPlay(){if(released)return;v.muted=true;muted=true;var q;try{q=v.play()}catch(e){}if(q&&q.catch)q.catch(function(){});
  clearTimeout(wd);wd=setTimeout(function(){if(!started&&!released){beginning=false;card.classList.add('need')}},3500)}
-function begin(){if(started||released||beginning)return;beginning=true;v.muted=false;muted=false;chip.style.display='none';
+function begin(){if(started||released||beginning)return;beginning=true;v.muted=false;muted=false;
  var p;try{p=v.play()}catch(e){}
  var t=setTimeout(function(){if(!started)muteAndPlay()},1800);
  if(p&&p.catch)p.catch(function(){clearTimeout(t);muteAndPlay()})}
@@ -511,17 +518,18 @@ v.addEventListener('timeupdate',function(){if(v.duration)pr.style.width=(v.curre
 v.addEventListener('ended',function(){pr.style.width='100%';sk.textContent='Enter site \u2192';setTimeout(release,500)});
 v.addEventListener('error',function(){if(!released)release()});
 function release(){if(released)return;released=true;try{v.pause()}catch(e){}window.__introHold=false;
- card.classList.add('leave');sk.style.display='none';
+ card.classList.add('leave');sk.style.display='none';chip.style.display='none';
  H.classList.add('rising');H.classList.add('go');ld.classList.add('off');
  setTimeout(function(){H.classList.remove('rising');edge.remove();ld.classList.add('gone');ld.style.setProperty('display','none','important');try{URL.revokeObjectURL(url)}catch(e){}window.scrollTo(0,0)},5000)}
 /* sequence: logo first, then the video rises from the bottom and plays */
-card.classList.add('up');ld.classList.add('vid-on');
+ld.classList.add('vid-on');
+card.classList.add('up');
 begin();
-pl.addEventListener('click',function(e){e.stopPropagation();begin()});
+pl.addEventListener('click',function(e){e.stopPropagation();card.classList.remove('need');begin()});
 /* taps are handled by unlock(): first tap unmutes; the video never pauses on tap */
 sk.addEventListener('click',function(e){e.stopPropagation();release()});
 /* browsers need a tap before sound: first tap or key anywhere starts it */
-function unlock(e){if(released)return;if(e.target===sk)return;if(!started)begin();else unmute()}
+function unlock(e){if(released)return;if(e.target===sk||e.target===chip||chip.contains(e.target))return;if(!started)begin();else unmute()}
 ['pointerdown','pointerup','touchstart','touchend','mousedown','mouseup','click'].forEach(function(n){D.addEventListener(n,unlock,{passive:true,capture:true})});
 D.addEventListener('keydown',function(e){if(e.key==='Escape')release();else unlock(e)});
 setTimeout(function(){if(!started&&!released)release()},30000);

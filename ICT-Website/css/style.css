@@ -624,3 +624,54 @@ html.rising .rise-edge{animation:edge 1.9s cubic-bezier(.16,.84,.22,1) both}
 .tg b img{width:28px;height:28px;object-fit:contain;display:block}
 .tg b img.inv{filter:brightness(0) invert(1)}
 .tg b{background:rgba(255,255,255,.06)}
+/* ===== Intro video: premium sound button, bottom-right corner (append to the very bottom of css/style.css) ===== */
+
+#ld>.iv-tog{position:fixed!important;top:auto!important;left:auto!important;right:22px!important;bottom:max(22px,env(safe-area-inset-bottom))!important;z-index:8;
+ display:inline-flex!important;align-items:center;gap:12px;height:56px;padding:0 20px 0 8px!important;border-radius:999px;cursor:pointer;pointer-events:auto;
+ color:#fff;font:600 .82rem/1 Inter,system-ui,sans-serif;letter-spacing:.02em;text-shadow:none!important;opacity:1!important;isolation:isolate;
+ border:1.5px solid transparent!important;
+ /* dark glass inside, moving colour-mix border outside */
+ background:linear-gradient(rgba(14,8,32,.86),rgba(14,8,32,.86)) padding-box,
+            linear-gradient(120deg,#7c3aed,#ec4899,#22d3ee,#8b5cf6,#7c3aed) border-box!important;
+ background-size:100% 100%,300% 300%!important;animation:ivMix 6s ease-in-out infinite;
+ -webkit-backdrop-filter:blur(14px) saturate(1.4)!important;backdrop-filter:blur(14px) saturate(1.4)!important;
+ box-shadow:0 10px 34px rgba(124,58,237,.38),0 0 0 1px rgba(255,255,255,.04) inset;
+ transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease}
+#ld>.iv-tog:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 14px 40px rgba(168,85,247,.55),0 0 0 1px rgba(255,255,255,.08) inset}
+#ld>.iv-tog:active{transform:scale(.97)}
+#ld>.iv-tog:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* round badge: colour-mix gradient + logo softly mixed + speaker icon */
+#ld>.iv-tog .tg-ic{position:relative;width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;overflow:hidden;
+ background:linear-gradient(120deg,#7c3aed,#ec4899,#22d3ee,#8b5cf6,#7c3aed);background-size:300% 300%;animation:ivMix 6s ease-in-out infinite;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),inset 0 -8px 14px rgba(255,255,255,.14),0 4px 14px rgba(124,58,237,.5)}
+#ld>.iv-tog .iv-lg{position:absolute;left:50%;top:50%;width:76%;height:76%;transform:translate(-50%,-50%);object-fit:contain;
+ opacity:.38;mix-blend-mode:screen;pointer-events:none;animation:ivLg 3.2s ease-in-out infinite}
+#ld>.iv-tog .iv-ic{position:relative;width:22px;height:22px;display:block;pointer-events:none;color:#fff;
+ filter:drop-shadow(0 0 5px rgba(255,255,255,.55)) drop-shadow(0 1px 3px rgba(60,20,120,.5))}
+#ld>.iv-tog:not(.off) .x{display:none}
+#ld>.iv-tog.off .w{display:none}
+
+/* label */
+#ld>.iv-tog .tg-tx{white-space:nowrap;min-width:5.6em}
+
+/* little equaliser: dances when sound is on, flat when off */
+#ld>.iv-tog .tg-eq{display:flex;align-items:center;gap:3px;height:18px}
+#ld>.iv-tog .tg-eq i{display:block;width:3px;height:100%;border-radius:3px;background:linear-gradient(#e9d5ff,#a78bfa);transform-origin:50% 50%;transform:scaleY(.18);transition:transform .3s ease}
+#ld>.iv-tog:not(.off) .tg-eq i{animation:ivEq 1s ease-in-out infinite}
+#ld>.iv-tog:not(.off) .tg-eq i:nth-child(2){animation-delay:-.25s}
+#ld>.iv-tog:not(.off) .tg-eq i:nth-child(3){animation-delay:-.5s}
+#ld>.iv-tog:not(.off) .tg-eq i:nth-child(4){animation-delay:-.75s}
+
+/* while muted: gentle pulse invites the visitor to turn sound on */
+#ld>.iv-tog.off{animation:ivMix 6s ease-in-out infinite,ivHint 2.2s ease-out infinite}
+
+@keyframes ivMix{0%,100%{background-position:0 0,0% 50%}50%{background-position:0 0,100% 50%}}
+@keyframes ivLg{50%{opacity:.58;transform:translate(-50%,-50%) scale(1.07)}}
+@keyframes ivEq{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+@keyframes ivHint{0%{box-shadow:0 10px 34px rgba(124,58,237,.38),0 0 0 0 rgba(168,85,247,.5)}100%{box-shadow:0 10px 34px rgba(124,58,237,.38),0 0 0 16px rgba(168,85,247,0)}}
+@media(max-width:560px){#ld>.iv-tog{right:14px!important;height:50px;padding:0 16px 0 6px!important;gap:9px}#ld>.iv-tog .tg-ic{width:38px;height:38px}}
+@media(prefers-reduced-motion:reduce){#ld>.iv-tog,#ld>.iv-tog .tg-ic,#ld>.iv-tog .iv-lg,#ld>.iv-tog .tg-eq i{animation:none!important}}
+
+/* fallback centre play button (only if the browser cannot start the video at all) */
+.iv-play .iv-ic{width:34px;height:34px;margin-left:3px;display:block}

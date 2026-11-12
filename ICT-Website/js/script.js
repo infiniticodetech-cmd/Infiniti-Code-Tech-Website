@@ -506,8 +506,11 @@ function paint(){var off=v.muted||v.volume===0;chip.classList.toggle('off',off);
 function setMuted(m){v.muted=m;muted=m;if(!m)v.volume=1;paint()}
 function unmute(){if(!muted||userMuted)return;setMuted(false)}
 chip.addEventListener('click',function(e){e.stopPropagation();var m=!v.muted;userMuted=m;setMuted(m)});
-var beginning=false,wd=0;
-v.addEventListener('playing',function(){started=true;beginning=false;clearTimeout(wd);card.classList.remove('need');chip.style.display='inline-flex';paint()});
+var beginning=false,wd=0,fb=0;
+var iOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+v.addEventListener('playing',function(){started=true;beginning=false;clearTimeout(wd);card.classList.remove('need');chip.style.display='inline-flex';paint();
+ /* safety net for iOS: if the 'ended' event never fires, still open the site when the video should be over */
+ clearTimeout(fb);if(v.duration&&isFinite(v.duration))fb=setTimeout(function(){if(!released)release()},Math.max(0,v.duration-v.currentTime)*1000+2000)});
 function muteAndPlay(){if(released)return;v.muted=true;muted=true;var q;try{q=v.play()}catch(e){}if(q&&q.catch)q.catch(function(){});
  clearTimeout(wd);wd=setTimeout(function(){if(!started&&!released){beginning=false;card.classList.add('need')}},3500)}
 function begin(){if(started||released||beginning)return;beginning=true;v.muted=false;muted=false;
@@ -519,7 +522,8 @@ v.addEventListener('ended',function(){pr.style.width='100%';sk.textContent='Ente
 v.addEventListener('error',function(){if(!released)release()});
 function release(){if(released)return;released=true;try{v.pause()}catch(e){}window.__introHold=false;
  card.classList.add('leave');sk.style.display='none';chip.style.display='none';
- H.classList.add('rising');H.classList.add('go');ld.classList.add('off');
+ if(!iOS)H.classList.add('rising'); /* 3D rise effect skipped on iPhone/iPad: it can leave the page blank there */
+ H.classList.add('go');ld.classList.add('off');
  setTimeout(function(){H.classList.remove('rising');edge.remove();ld.classList.add('gone');ld.style.setProperty('display','none','important');try{URL.revokeObjectURL(url)}catch(e){}window.scrollTo(0,0)},5000)}
 /* sequence: logo first, then the video rises from the bottom and plays */
 ld.classList.add('vid-on');

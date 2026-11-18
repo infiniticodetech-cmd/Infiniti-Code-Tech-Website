@@ -675,3 +675,20 @@ html.rising .rise-edge{animation:edge 1.9s cubic-bezier(.16,.84,.22,1) both}
 
 /* fallback centre play button (only if the browser cannot start the video at all) */
 .iv-play .iv-ic{width:34px;height:34px;margin-left:3px;display:block}
+/* ===== "Meet your project guide" card: same look on phone and desktop (append to the very bottom of css/style.css) ===== */
+.demo-guide{display:grid!important;grid-template-columns:96px minmax(0,1fr) auto;align-items:center;gap:18px 22px!important}
+.demo-guide>div[role="img"]{width:96px!important;height:96px!important;flex:none!important}
+.demo-guide>div:not([role="img"]){min-width:0}
+.demo-guide>button{justify-self:end;white-space:nowrap}
+.demo-guide h3{line-height:1.25}
+.demo-guide p{line-height:1.6;overflow-wrap:break-word}
+
+/* phones: avatar left, text right, full-width button underneath (nothing gets squeezed) */
+@media(max-width:760px){
+ .demo-guide{grid-template-columns:72px minmax(0,1fr)!important;gap:14px 14px!important;padding:16px!important;border-radius:16px!important}
+ .demo-guide>div[role="img"]{width:72px!important;height:72px!important;align-self:start;border-width:2px!important}
+ .demo-guide>button{grid-column:1 / -1;justify-self:stretch;width:100%;display:flex;justify-content:center;text-align:center;padding:13px 18px;font-size:.95rem}
+ .demo-guide h3{font-size:1.1rem}
+ .demo-guide p{font-size:.88rem}
+ .demo-guide .eb{font-size:.62rem}
+}

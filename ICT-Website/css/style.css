@@ -692,3 +692,8 @@ html.rising .rise-edge{animation:edge 1.9s cubic-bezier(.16,.84,.22,1) both}
  .demo-guide p{font-size:.88rem}
  .demo-guide .eb{font-size:.62rem}
 }
+/* ===== Hero typing text: moves, but the page below never shifts (append to the very bottom of css/style.css) ===== */
+/* the typed text always sits on its own line(s) under "Infiniti code" */
+.hero h1 .tw2{display:block!important;border-right:0!important;padding-right:0!important}
+/* blinking caret placed right after the typed text */
+.hero h1 .tw2::after{content:"";display:inline-block;width:2px;height:.82em;margin-left:5px;vertical-align:-.06em;background:var(--v2,#a78bfa);animation:blink 1s steps(1) infinite}

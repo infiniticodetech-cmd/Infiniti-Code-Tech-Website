@@ -445,6 +445,10 @@ if(fine&&!calm){d.querySelectorAll('.acts .btn,.cb .btn').forEach(function(b){
 var sp=d.querySelector('.hero h1 span');
 if(sp&&!calm){var base=sp.textContent.trim();var words=[base,'Websites that convert','Mobile apps people love','Software built to scale'];var wi=0,ci=base.length,del=false;
  sp.classList.add('tw2');
+ /* reserve the tallest phrase's height so the rest of the page never jumps while the text types */
+ function lockH(){var cur=sp.textContent;sp.style.minHeight='0px';var m=0;words.forEach(function(w){sp.textContent=w;m=Math.max(m,sp.offsetHeight)});sp.textContent=cur;sp.style.minHeight=m+'px'}
+ lockH();var lt;window.addEventListener('resize',function(){clearTimeout(lt);lt=setTimeout(lockH,150)});
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(lockH);window.addEventListener('load',lockH);
  (function tick(){var w=words[wi];ci+=del?-1:1;sp.textContent=w.slice(0,ci)||'\u200b';var t=del?28:55;
   if(!del&&ci>=w.length){del=true;t=wi===0?3200:1800}else if(del&&ci<=0){del=false;wi=(wi+1)%words.length;t=350}
   setTimeout(tick,t)})();}

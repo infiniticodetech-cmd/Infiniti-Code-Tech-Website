@@ -542,9 +542,4 @@ function unlock(e){if(released)return;if(e.target===sk||e.target===chip||chip.co
 D.addEventListener('keydown',function(e){if(e.key==='Escape')release();else unlock(e)});
 setTimeout(function(){if(!started&&!released)release()},30000);
 })();
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NCB2K6M2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-</script>
+

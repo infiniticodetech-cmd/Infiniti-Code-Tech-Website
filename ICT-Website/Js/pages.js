@@ -19,6 +19,7 @@ function show(page,opts){
   if(PAGES.indexOf(page)<0)page='home';
   var changed=page!==current;
   current=page;
+  
   D.body.setAttribute('data-page',page);
   [].forEach.call(D.querySelectorAll('main>[data-page]'),function(el){
     el.classList.toggle('pg-on',el.getAttribute('data-page')===page);

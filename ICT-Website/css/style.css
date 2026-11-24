@@ -782,3 +782,9 @@ html:not(.js) main>[data-page]{display:block!important}
 @media(max-width:760px){.pf-init{font-size:3.8rem}}
 .brand span{line-height:1.2}
 @media(max-width:520px){header .brand span{font-size:.95rem;max-width:150px}footer .brand span{max-width:none}}
+/* header fixes: single-line labels, Menu button at right edge */
+nav a,.nav>.btn,.nav .btn{white-space:nowrap}
+.brand{flex-shrink:0}
+@media(min-width:761px) and (max-width:1280px){.nav{gap:16px}nav ul{gap:16px}nav a{font-size:.9rem}.nav>.btn.p{padding:11px 18px;font-size:.9rem}}
+@media(max-width:760px){.nav{justify-content:space-between}#mb{margin-left:auto}}
+@media(max-width:520px){header .brand span{max-width:none;font-size:.95rem;white-space:normal}}

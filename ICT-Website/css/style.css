@@ -780,3 +780,5 @@ html:not(.js) main>[data-page]{display:block!important}
 
 .pf-init{position:absolute;inset:0;display:grid;place-items:center;font:700 4.6rem Sora,Inter,system-ui,sans-serif;color:#fff;text-shadow:0 6px 24px rgba(0,0,0,.35)}
 @media(max-width:760px){.pf-init{font-size:3.8rem}}
+.brand span{line-height:1.2}
+@media(max-width:520px){header .brand span{font-size:.95rem;max-width:150px}footer .brand span{max-width:none}}

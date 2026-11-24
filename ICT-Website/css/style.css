@@ -788,3 +788,8 @@ nav a,.nav>.btn,.nav .btn{white-space:nowrap}
 @media(min-width:761px) and (max-width:1280px){.nav{gap:16px}nav ul{gap:16px}nav a{font-size:.9rem}.nav>.btn.p{padding:11px 18px;font-size:.9rem}}
 @media(max-width:760px){.nav{justify-content:space-between}#mb{margin-left:auto}}
 @media(max-width:520px){header .brand span{max-width:none;font-size:.95rem;white-space:normal}}
+/* header brand: line 1 = Infiniti Code Technologies, line 2 = PRIVATE LIMITED */
+header .brand span{white-space:nowrap;max-width:none}
+header .brand small{display:block!important;white-space:nowrap}
+.nav>.btn{flex-shrink:0}
+@media(max-width:520px){header .brand span{font-size:.92rem}header .brand small{font-size:.55rem;letter-spacing:.12em}}
